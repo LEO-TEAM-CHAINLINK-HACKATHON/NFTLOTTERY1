@@ -1,0 +1,80 @@
+
+.main {
+  padding: 4rem 0;
+  flex: 1 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+} 
+
+// .gDkHDj {
+//     justify-content: center;
+   
+// }
+// .sc-lbxAil {
+//   margin-top: 2em !important;
+// }
+
+.fa-rotate {
+  transform: rotate(136deg);
+
+}
+
+.waffle {
+  position:relative;
+  top: calc(5vh + 20px);
+}
+
+.badge {
+  padding: 0 12px;
+}
+
+.badge-success {
+  background-color: #4B44E1;
+  border-color: #1F1C5C !important;
+
+}
+
+.badge-raffle {
+  color: white !important;
+  background-color: #00d5ff  !important;
+  border-color: #1F1C5C !important;
+}
+
+
+.footer {
+  display: flex;
+  flex: 1;
+  padding: 2rem 0;
+  border-top: 1px solid #eaeaea;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+  position: relative;
+  
+}
+
+.footer a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  text-decoration: none;
+  color: #000
+}
+
+
+
+.logo {
+  height: 1em;
+  margin-left: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  // .grid {
+  //   width: 100%;
+  //   flex-direction: column;
+  // }
+}
+@import "~bootstrap/scss/bootstrap.scss";
