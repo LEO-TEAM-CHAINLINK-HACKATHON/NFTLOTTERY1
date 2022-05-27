@@ -158,12 +158,14 @@ contract Raffle is VRFConsumerBaseV2 {
             s_lastTimeStamp = block.timestamp;
             emit WinnerPicked(recentWinner);
     }
-    
-    function transferNFT (address s_transferer, address s_receiver, uint256 tokenId) {
-        require(msg.sender == s_owner, "Only the owner can call this function");
-        address payable s_transferer = msg.sender;
-        address payable s_receiver = s_recentWinner;
-        transferFrom(s_transferer, s_receiver, tokenId);    
-    }
+
     
 }
+
+
+  // function transferNFT (address s_transferer, address s_receiver, uint256 tokenId) internal {
+    //     require(msg.sender == s_owner, "Only the owner can call this function");
+    //     //address payable s_transferer = msg.sender;
+    //    //address payable s_receiver = s_recentWinner;
+    //    // transferFrom(s_transferer, s_receiver, tokenId);    
+    //  }

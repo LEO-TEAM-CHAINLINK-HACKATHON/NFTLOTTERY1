@@ -1,8 +1,8 @@
 import LotteryButton from "./lotteryButton";
 
-const EntryButton = ({enterRaffle}) => {
+const EntryButton = ({enterRaffle, getRecentWinner}) => {
     return (
-        <LotteryButton enterRaffle={enterRaffle} />
+        <LotteryButton enterRaffle={enterRaffle} getRecentWinner={getRecentWinner} />
     )
 }
 

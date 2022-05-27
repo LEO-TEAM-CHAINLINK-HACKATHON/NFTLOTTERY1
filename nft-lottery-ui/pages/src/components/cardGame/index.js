@@ -1,6 +1,6 @@
 import Image from "next/image"
 import cardDeck from "../../../../helpers/cardDeck"
-import  deckBack  from "../../../public/images/cards/deckBack.svg"
+import  deckBack  from "../../../../public/images/cards/deckBack.svg"
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
