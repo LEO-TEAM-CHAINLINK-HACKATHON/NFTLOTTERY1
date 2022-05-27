@@ -44,6 +44,14 @@ contract NFTCollection is
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
     }
+    
+    function _beforeTokenTransfer(address from, address to, uint256 tokenId)
+        internal
+        whenNotPaused
+        override
+    {
+        super._beforeTokenTransfer(from, to, tokenId);
+    }
 
     function retrieveTokenId() public view returns (uint256) {
         return uint256(_tokenIdCounter.current());
