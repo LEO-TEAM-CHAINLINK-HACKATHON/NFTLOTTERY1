@@ -30,6 +30,7 @@ contract Raffle is VRFConsumerBaseV2 {
     uint256 public immutable i_numberOfTickets;
 
     address payable[] public s_rafflePlayers; // player address to pay/give price if won
+    address private s_owner;
 
     uint256 public s_lastTimeStamp; // keep track of time
 
@@ -76,6 +77,7 @@ contract Raffle is VRFConsumerBaseV2 {
         i_gasLane = gasLane;
         s_subscriptionId = subscriptionId;
         i_callbackGasLimit = callbackGasLimit;
+        s_owner = msg.sender;
 
     }
 
@@ -157,8 +159,9 @@ contract Raffle is VRFConsumerBaseV2 {
     }
     
     function transferNFT (address s_transferer, address s_receiver, uint256 tokenId) {
-        address s_transferer = msg.sender;
-        address s_receiver = s_recentWinner;
+        require(msg.sender == s_owner, "Only the owner can call this function");
+        address payable s_transferer = msg.sender;
+        address payable s_receiver = s_recentWinner;
         transferFrom(s_transferer, s_receiver, tokenId);    
     }
     
