@@ -153,10 +153,13 @@ contract Raffle is VRFConsumerBaseV2 {
             s_rafflePlayers = new address payable[](0);
             s_raffleState = RaffleState.Open;
             s_lastTimeStamp = block.timestamp;
-            _grantRole(MINTER_ROLE, s_recentWinner);
             emit WinnerPicked(recentWinner);
-            
-
+    }
+    
+    function transferNFT (address s_transferer, address s_receiver, uint256 tokenId) {
+        address s_transferer = msg.sender;
+        address s_receiver = s_recentWinner;
+        transferFrom(s_transferer, s_receiver, tokenId);    
     }
     
 }
