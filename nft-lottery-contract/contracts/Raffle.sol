@@ -153,10 +153,7 @@ contract Raffle is VRFConsumerBaseV2 {
             s_rafflePlayers = new address payable[](0);
             s_raffleState = RaffleState.Open;
             s_lastTimeStamp = block.timestamp;
-            (bool success, ) = recentWinner.call{value: address(this).balance}("");
-            if (!success) {
-                revert Raffle_TransferFailed();
-            }
+            _grantRole(MINTER_ROLE, s_recentWinner);
             emit WinnerPicked(recentWinner);
             
 
