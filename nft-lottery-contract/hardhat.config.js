@@ -9,19 +9,33 @@ require("dotenv").config();
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
+
+const RINKEBY_RPC_URL = process.env.RINKEBY_RPC_URL;
+const RINKEBY_PRIVATE_KEY = process.env.RINKEBY_PRIVATE_KEY;
+const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY;
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 module.exports = {
-  // networks:{
-  //   rinkeby:{
-  //     url: process.env.RINKEBY_RPC_URL,
-  //     accounts:[process.env.PRIVATE_KEY],
-  //     chainId:4,
-  //     saveDeployments:true,
-  //   },
-  // },
-  // namedAccounts:{
-  //   deployer:{
-  //     default:0,
-  //   }
-  // },
+  defaultNetwork: "hardhat",
+  networks: {
+    hardhat: {
+      chainId: 31337,
+      blockConfirmations: 1,
+    },
+    rinkeby: {
+      url: RINKEBY_RPC_URL,
+      accounts: [RINKEBY_PRIVATE_KEY],
+      chainId: 4,
+      blockConfirmations: 6,
+      saveDeployments: true,
+    },
+  },
   solidity: "0.8.7",
+  namedAccounts: {
+    deployer: {
+      default: 0,
+    },
+    player: {
+      default: 1,
+    },
+  },
 };
