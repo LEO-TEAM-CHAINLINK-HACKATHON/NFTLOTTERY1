@@ -190,6 +190,10 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
         override
     {}
 
+    function getInterval() public view returns (uint256) {
+        return i_interval;
+    }
+
     function checkUpkeep(bytes calldata checkData)
         external
         override
