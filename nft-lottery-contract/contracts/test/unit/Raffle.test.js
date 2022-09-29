@@ -1,9 +1,9 @@
 const { assert } = require("chai")
 const { getNamedAccounts, deployments, ethers, network } = require("hardhat")
 
-const { developementChains, networkConfig } = require("/../..helper-hardhat-config")
+const { developmentChains, networkConfig } = require("/../..helper-hardhat-config")
 
-!developementChains.includes(network.name)
+!developmentChains.includes(network.name)
     ? describe.skip
     : describe("Raffle Unit Tests", async function () {
           let raffle, vrfCoordinatorV2Mock, interval, deployer
