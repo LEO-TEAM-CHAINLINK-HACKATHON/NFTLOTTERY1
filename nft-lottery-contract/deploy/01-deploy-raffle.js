@@ -3,7 +3,7 @@ const { developmentChains, networkConfig } = require("../helper-hardhat-config")
 const { verify } = require("../utils/verify")
 const VRF_SUB_FUND_AMOUNT = ethers.utils.parseEther("1")
 module.exports = async function ({ getNamedAccounts, deployments }) {
-    const { deploy } = deployments
+    const { deploy, log } = deployments
     const { deployer } = await getNamedAccounts()
     const chainId = network.config.chainId
     let vrfCoordinatorV2Address, subscriptionId, vrfCoordinatorV2Mock
@@ -21,16 +21,16 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
         subscriptionId = networkConfig[chainId]["subscriptionId"]
     }
 
-    const entranceFee = networkConfig[chainId]["entranceFee"]
-    const gasLane = networkConfig[chainId]["gasLane"]
-    const callbackLimit = networkConfig[chainId]["callbackGasLimit"]
-    const interval = networkConfig[chainId]["interval"]
+    // const entranceFee = networkConfig[chainId]["entranceFee"]
+    // const gasLane = networkConfig[chainId]["gasLane"]
+    // const callbackLimit = networkConfig[chainId]["callbackGasLimit"]
+    // const interval = networkConfig[chainId]["interval"]
 
     const arguments = [
         vrfCoordinatorV2Address,
-        subscriptionId,
         networkConfig[chainId]["raffleEntranceFee"],
         networkConfig[chainId]["gasLane"],
+        subscriptionId,
         networkConfig[chainId]["callbackGasLimit"],
         networkConfig[chainId]["keepersUpdateInterval"],
     ]
