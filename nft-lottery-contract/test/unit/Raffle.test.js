@@ -47,7 +47,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                   await network.provider.send("evm_increaseTime", [interval.toNumber() + 1])
                   await network.provider.send("evm_mine", [])
                   // pretend to be a keeper
-                  await raffle.performUpkeep([])
+                  await raffle.performUpkeep("0x")
                   await expect(raffle.enterRaffle({ value: raffleEntranceFee })).to.be.revertedWith(
                       "Raffle_NotOpen"
                   )
@@ -57,7 +57,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
               it("returns false if people haven't sent ETH", async function () {
                   await network.provider.send("evm_increaseTime", [interval.toNumber() + 1])
                   await network.provider.send("evm_mine", [])
-                  const { upkeepNeeded } = await raffle.callStatic.checkupkeep([])
+                  const { upkeepNeeded } = await raffle.callStatic.checkupkeep("0x")
                   assert(!upkeepNeeded)
               })
               it("returns false if raffle isn't open", async function () {
@@ -65,9 +65,9 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                   await network.provider.send("evm_increaseTime", [interval.toNumber() + 1])
                   await network.provider.send("evm_mine", [])
                   // pretend to be a keeper
-                  await raffle.performUpkeep([])
+                  await raffle.performUpkeep("0x")
                   const raffleState = await raffle.getRaffleState()
-                  const { upkeepNeeded } = await raffle.callStatic.checkupkeep([])
+                  const { upkeepNeeded } = await raffle.callStatic.checkupkeep("0x")
                   assert.equal(raffleState.toString(), "1")
                   assert.equal(upkeepNeeded, false)
               })
