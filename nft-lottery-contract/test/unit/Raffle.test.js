@@ -54,22 +54,21 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
               })
           })
           describe("checkupkeep", function () {
-              it("returns false if people haven't sent ETH", async function () {
+              it("returns false if people haven't sent ETH", async () => {
                   await network.provider.send("evm_increaseTime", [interval.toNumber() + 1])
-                  await network.provider.send("evm_mine", [])
+                  await network.provider.request({ method: "evm_mine", params: [] })
                   const { upkeepNeeded } = await raffle.callStatic.checkupkeep("0x")
                   assert(!upkeepNeeded)
               })
-              it("returns false if raffle isn't open", async function () {
+              it("returns false if raffle isn't open", async () => {
                   await raffle.enterRaffle({ value: raffleEntranceFee })
                   await network.provider.send("evm_increaseTime", [interval.toNumber() + 1])
-                  await network.provider.send("evm_mine", [])
+                  await network.provider.request({ method: "evm_mine", params: [] })
                   // pretend to be a keeper
-                  await raffle.performUpkeep("0x")
+                  await raffle.performUpkeep([])
                   const raffleState = await raffle.getRaffleState()
                   const { upkeepNeeded } = await raffle.callStatic.checkupkeep("0x")
-                  assert.equal(raffleState.toString(), "1")
-                  assert.equal(upkeepNeeded, false)
+                  assert.equal(raffleState.toString() == "1", (upkeepNeeded = false))
               })
               it("returns false if enough time hasn't passed", async () => {
                   await raffle.enterRaffle({ value: raffleEntranceFee })
@@ -99,7 +98,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                       "Raffle_UpkeepNotNeeded"
                   )
               })
-              it("updates the raffle state, emits and event, and calls the vrf coordinator", async function () {
+              it("updates the raffle state, emits and event", async function () {
                   await raffle.enterRaffle({ value: raffleEntranceFee })
                   await network.provider.send("evm_increaseTime", [interval.toNumber() + 1])
                   await network.provider.request({ method: "evm_mine", params: [] })
@@ -108,7 +107,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                   const requestId = txReceipt.events[1].args.requestId
                   const raffleState = await raffle.getRaffleState()
                   assert(requestId.toNumber() > 0)
-                  assert(raffleState.toString() == "1")
+                  assert(raffleState == "1")
               })
           })
 
