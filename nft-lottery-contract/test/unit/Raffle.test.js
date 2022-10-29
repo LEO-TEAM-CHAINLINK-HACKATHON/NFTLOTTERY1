@@ -68,11 +68,12 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                   await raffle.performUpkeep([])
                   const raffleState = await raffle.getRaffleState()
                   const { upkeepNeeded } = await raffle.callStatic.checkupkeep("0x")
-                  assert.equal(raffleState.toString() == "1", (upkeepNeeded = false))
+                  assert.equal(raffleState.toString() == "1", upkeepNeeded == false)
+                  //   assert.equal()
               })
               it("returns false if enough time hasn't passed", async () => {
                   await raffle.enterRaffle({ value: raffleEntranceFee })
-                  await network.provider.send("evm_increaseTime", [interval.toNumber() - 5]) // use a higher number here if this test fails
+                  await network.provider.send("evm_increaseTime", [interval.toNumber() - 10]) // use a higher number here if this test fails
                   await network.provider.request({ method: "evm_mine", params: [] })
                   const { upkeepNeeded } = await raffle.callStatic.checkupkeep("0x") // upkeepNeeded = (timePassed && isOpen && hasBalance && hasPlayers)
                   assert(!upkeepNeeded)
@@ -94,7 +95,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                   assert(tx)
               })
               it("reverts when checkupkeep is false", async function () {
-                  await expect(raffle.performUpkeep("0X")).to.be.revertedWith(
+                  await expect(raffle.performUpkeep([])).to.be.revertedWith(
                       "Raffle_UpkeepNotNeeded"
                   )
               })
@@ -120,10 +121,10 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
               it("can only be called after performupkeep", async () => {
                   await expect(
                       vrfCoordinatorV2Mock.fulfillRandomWords(0, raffle.address)
-                  ).to.be.revertedWith("nonexistant request")
+                  ).to.be.revertedWith("nonexistent request")
                   await expect(
                       vrfCoordinatorV2Mock.fulfillRandomWords(1, raffle.address)
-                  ).to.be.revertedWith("nonexistant request")
+                  ).to.be.revertedWith("nonexistent request")
               })
           })
       })
