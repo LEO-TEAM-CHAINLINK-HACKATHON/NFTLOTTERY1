@@ -165,13 +165,13 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                               reject(e)
                           }
                       })
+                      const tx = await raffle.performUpKeep("0x")
+                      const txReceipt = await tx.wait(1)
+                      await vrfCoordinatorV2Mock.fulfillRandomWords(
+                          txReceipt.events[1].args.requestId,
+                          raffle.address
+                      )
                   })
-                  const tx = await raffle.performUpKeep("0x")
-                  const txReceipt = await tx.wait(1)
-                  await vrfCoordinatorV2Mock.fulfillRandomWords(
-                      txReceipt.events[1].args.requestId,
-                      raffle.address
-                  )
               })
           })
       })
