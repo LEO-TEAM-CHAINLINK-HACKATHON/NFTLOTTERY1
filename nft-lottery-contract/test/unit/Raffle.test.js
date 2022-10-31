@@ -146,25 +146,25 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                   await new Promise(async (resolve, reject) => {
                       raffle.once("WinnerPicked", async () => {
                           console.log("Found Event!")
-                      })
-                      try {
-                          const recentWinner = await raffle.getRecentWinner()
-                          console.log(recentWinner)
-                          console.log(accounts[2].address)
-                          console.log(accounts[0].address)
-                          console.log(accounts[1].address)
-                          console.log(accounts[3].address)
+                          try {
+                              const recentWinner = await raffle.getRecentWinner()
+                              console.log(recentWinner)
+                              console.log(accounts[2].address)
+                              console.log(accounts[0].address)
+                              console.log(accounts[1].address)
+                              console.log(accounts[3].address)
 
-                          const raffleState = await raffle.getRaffleState()
-                          const endingTimeStamp = await raffle.getLastTimeStamp()
-                          const numPlayers = await raffle.getNumberOfPlayers()
-                          assert.equal(numPlayers.toString(), "0")
-                          assert.equal(raffleState.toString(), "0")
-                          assert(endingTimeStamp > startingTimeStamp)
-                      } catch (e) {
-                          reject(e)
-                      }
-                      resolve()
+                              const raffleState = await raffle.getRaffleState()
+                              const endingTimeStamp = await raffle.getLastTimeStamp()
+                              const numPlayers = await raffle.getNumberOfPlayers()
+                              assert.equal(numPlayers.toString(), "0")
+                              assert.equal(raffleState.toString(), "0")
+                              assert(endingTimeStamp > startingTimeStamp)
+                              resolve()
+                          } catch (e) {
+                              reject(e)
+                          }
+                      })
                   })
                   const tx = await raffle.performUpKeep("0x")
                   const txReceipt = await tx.wait(1)
