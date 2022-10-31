@@ -146,6 +146,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                   await new Promise(async (resolve, reject) => {
                       raffle.once("WinnerPicked", async () => {
                           console.log("Found Event!")
+
                           try {
                               const recentWinner = await raffle.getRecentWinner()
                               console.log(recentWinner)
