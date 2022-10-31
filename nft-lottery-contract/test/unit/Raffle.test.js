@@ -126,5 +126,52 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                       vrfCoordinatorV2Mock.fulfillRandomWords(1, raffle.address)
                   ).to.be.revertedWith("nonexistent request")
               })
+              it("picks a winner, resets the lottery, and sends money", async function () {
+                  const additionalEntrants = 3
+                  const startingAccountIndex = 2
+                  const accounts = await ethers.getSigners()
+                  for (
+                      let i = startingAccountIndex;
+                      i < startingAccountIndex + additionalEntrants;
+                      i++
+                  ) {
+                      const accountConnectedRaffle = raffle.connect(accounts[i])
+                      await accountConnectedRaffle.enterRaffle({ value: raffleEntranceFee })
+                  }
+                  const startingTimeStamp = await raffle.getLastTimeStamp()
+
+                  // performUpkeep (mokc being chainlink keeper)
+                  // fulfillRandomWords (mock being chainlink vrf coordinator)
+                  // wait for fulfillRandomWords to be called
+                  await new Promise(async (resolve, reject) => {
+                      raffle.once("WinnerPicked", async () => {
+                          console.log("Found Event!")
+                      })
+                      try {
+                          const recentWinner = await raffle.getRecentWinner()
+                          console.log(recentWinner)
+                          console.log(accounts[2].address)
+                          console.log(accounts[0].address)
+                          console.log(accounts[1].address)
+                          console.log(accounts[3].address)
+
+                          const raffleState = await raffle.getRaffleState()
+                          const endingTimeStamp = await raffle.getLastTimeStamp()
+                          const numPlayers = await raffle.getNumberOfPlayers()
+                          assert.equal(numPlayers.toString(), "0")
+                          assert.equal(raffleState.toString(), "0")
+                          assert(endingTimeStamp > startingTimeStamp)
+                      } catch (e) {
+                          reject(e)
+                      }
+                      resolve()
+                  })
+                  const tx = await raffle.performUpKeep("0x")
+                  const txReceipt = await tx.wait(1)
+                  await vrfCoordinatorV2Mock.fulfillRandomWords(
+                      txReceipt.events[1].args.requestId,
+                      raffle.address
+                  )
+              })
           })
       })
