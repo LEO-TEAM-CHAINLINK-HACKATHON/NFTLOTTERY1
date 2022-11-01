@@ -89,12 +89,12 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
      * 4. Lottery should be in "open" state
      */
 
-    function checkupkeep(
+    function checkUpkeep(
         bytes memory /*checkData*/
     )
         public
+        override
         returns (
-            /*override*/
             bool upkeepNeeded,
             bytes memory /*performData*/
         )
@@ -111,7 +111,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     function performUpkeep(bytes calldata) external override {
         // get the random number from chainlink oracle
         //Once got it, pick a random winner
-        (bool upkeepNeeded, ) = checkupkeep("");
+        (bool upkeepNeeded, ) = checkUpkeep("");
         if (!upkeepNeeded) {
             revert Raffle_UpkeepNotNeeded(
                 address(this).balance,
@@ -132,10 +132,10 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     /*View / Pure functions */
 
-    function fullfillRandomWords(
+    function fulfillRandomWords(
         uint256, // requestId,
         uint256[] memory randomWords
-    ) internal {
+    ) internal override {
         uint256 indexOfWinner = randomWords[0] % s_players.length;
         address payable recentWinner = s_players[indexOfWinner];
         s_recentWinnner = recentWinner;
@@ -184,19 +184,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
         return REQUEST_CONFIRMATIONS;
     }
 
-    function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords)
-        internal
-        virtual
-        override
-    {}
-
     function getInterval() public view returns (uint256) {
         return i_interval;
     }
-
-    function checkUpkeep(bytes calldata checkData)
-        external
-        override
-        returns (bool upkeepNeeded, bytes memory performData)
-    {}
 }
