@@ -92,9 +92,9 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     function checkUpkeep(
         bytes memory /*checkData*/
     )
-        public override
+        public
+        override
         returns (
-            /*override*/
             bool upkeepNeeded,
             bytes memory /*performData*/
         )
