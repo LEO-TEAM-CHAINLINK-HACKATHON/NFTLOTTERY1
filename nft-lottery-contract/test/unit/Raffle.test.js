@@ -139,7 +139,6 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                       await accountConnectedRaffle.enterRaffle({ value: raffleEntranceFee })
                   }
                   const startingTimeStamp = await raffle.getLastTimeStamp()
-
                   // performUpkeep (mokc being chainlink keeper)
                   // fulfillRandomWords (mock being chainlink vrf coordinator)
                   // wait for fulfillRandomWords to be called
@@ -166,7 +165,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                               reject(e)
                           }
                       })
-                      const tx = await raffle.performUpKeep("0x")
+                      const tx = await raffle.performUpkeep("0x")
                       const txReceipt = await tx.wait(1)
                       await vrfCoordinatorV2Mock.fulfillRandomWords(
                           txReceipt.events[1].args.requestId,
