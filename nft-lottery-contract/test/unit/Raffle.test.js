@@ -157,9 +157,20 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                               const raffleState = await raffle.getRaffleState()
                               const endingTimeStamp = await raffle.getLastTimeStamp()
                               const numPlayers = await raffle.getNumberOfPlayers()
+                              const winnerEndingBalance = await accounts[2].getBalance()
                               assert.equal(numPlayers.toString(), "0")
                               assert.equal(raffleState.toString(), "0")
                               assert(endingTimeStamp > startingTimeStamp)
+                              assert.equal(
+                                  winnerEndingBalance.toString(),
+                                  winnerStartingBalance
+                                      .add(
+                                          raffleEntranceFee
+                                              .mul(additionalEntrants)
+                                              .add(raffleEntranceFee)
+                                      )
+                                      .toString()
+                              )
                               resolve()
                           } catch (e) {
                               reject(e)
@@ -167,6 +178,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                       })
                       const tx = await raffle.performUpkeep("0x")
                       const txReceipt = await tx.wait(1)
+                      const winnerStartingBalance = await accounts[2].getBalance()
                       await vrfCoordinatorV2Mock.fulfillRandomWords(
                           txReceipt.events[1].args.requestId,
                           raffle.address
