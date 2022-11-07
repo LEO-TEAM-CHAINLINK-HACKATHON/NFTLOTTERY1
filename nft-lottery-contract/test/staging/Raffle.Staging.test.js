@@ -1,7 +1,7 @@
 const { assert, expect } = require("chai")
 const { getNamedAccounts, deployments, ethers, network } = require("hardhat")
 
-const { developmentChains, networkConfig } = require("../../helper-hardhat-config")
+const { developmentChains } = require("../../helper-hardhat-config")
 
 !developmentChains.includes(network.name)
     ? describe.skip
@@ -11,7 +11,6 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
 
           beforeEach(async function () {
               deployer = (await getNamedAccounts()).deployer
-              await deployments.fixture(["all"])
               raffle = await ethers.getContract("Raffle", deployer)
               //   vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock", deployer)
               //   interval = await raffle.getInterval()
@@ -36,7 +35,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                               const raffleState = await raffle.getRaffleState()
                               const winnerEndingBalance = await accounts[0].getBalance()
                               const endingTimeStamp = await raffle.getLastTimeStamp()
-                              await expect(raffle.getPlayers(0)).to.be.reverted
+                              await expect(raffle.getPlayer(0)).to.be.reverted
                               assert.equal(recentWinner.toSring(), accounts[0].address)
                               assert.equal(raffleState, 0)
                               assert.equal(
