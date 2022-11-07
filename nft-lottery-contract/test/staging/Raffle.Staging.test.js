@@ -30,7 +30,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                       //just in case blockchain runs fast
                       raffle.once("WinnerPicked", async () => {
                           console.log("winner picked event fired")
-                          resolve()
+
                           try {
                               const recentWinner = await raffle.getRecentWinner()
                               const raffleState = await raffle.getRaffleState()
@@ -44,6 +44,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                                   winnerStartingBalance.add(raffleEntranceFee).toString()
                               )
                               assert(endingTimeStamp > startingTimeStamp)
+                              resolve()
                           } catch (error) {
                               console.log(error)
                               reject(error)
