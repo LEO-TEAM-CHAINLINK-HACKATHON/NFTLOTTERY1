@@ -39,7 +39,7 @@ developmentChains.includes(network.name)
                               console.log("winner ending balance", winnerEndingBalance.toString())
                               const endingTimeStamp = await raffle.getLastTimeStamp()
                               await expect(raffle.getPlayer(0)).to.be.reverted
-                              assert.equal(recentWinner.toSring(), accounts[0].address)
+                              assert.equal(recentWinner.toString(), accounts[0].address)
                               console.log("checkpoint 1")
                               assert.equal(raffleState, 0)
                               console.log("checkpoint 2")
