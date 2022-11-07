@@ -3,7 +3,7 @@ const { getNamedAccounts, deployments, ethers, network } = require("hardhat")
 
 const { developmentChains } = require("../../helper-hardhat-config")
 
-!developmentChains.includes(network.name)
+developmentChains.includes(network.name)
     ? describe.skip
     : describe("Raffle Staging Tests", function () {
           let raffle, vrfCoordinatorV2Mock, interval, deployer, raffleEntranceFee
@@ -32,17 +32,24 @@ const { developmentChains } = require("../../helper-hardhat-config")
 
                           try {
                               const recentWinner = await raffle.getRecentWinner()
+                              console.log("recent winner", recentWinner)
                               const raffleState = await raffle.getRaffleState()
+                              console.log("raffle state", raffleState)
                               const winnerEndingBalance = await accounts[0].getBalance()
+                              console.log("winner ending balance", winnerEndingBalance.toString())
                               const endingTimeStamp = await raffle.getLastTimeStamp()
                               await expect(raffle.getPlayer(0)).to.be.reverted
                               assert.equal(recentWinner.toSring(), accounts[0].address)
+                              console.log("checkpoint 1")
                               assert.equal(raffleState, 0)
+                              console.log("checkpoint 2")
                               assert.equal(
                                   winnerEndingBalance.toString(),
                                   winnerStartingBalance.add(raffleEntranceFee).toString()
                               )
+                              console.log("checkpoint 3")
                               assert(endingTimeStamp > startingTimeStamp)
+                              console.log("checkpoint 4")
                               resolve()
                           } catch (error) {
                               console.log(error)
@@ -56,6 +63,7 @@ const { developmentChains } = require("../../helper-hardhat-config")
                       await tx.wait(1)
                       console.log("Ok, time to wait...")
                       const winnerStartingBalance = await accounts[0].getBalance()
+                      console.log("winner starting balance", winnerStartingBalance.toString())
 
                       // all code below will only complete when listener has finised its job
                   })

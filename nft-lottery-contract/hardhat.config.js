@@ -30,7 +30,6 @@ module.exports = {
             url: GOERLI_RPC_URL,
             accounts: [GOERLI_PRIVATE_KEY],
             //entreeFee: 0.1,
-            //vfrCoordinatorV2: "0x3ca42d66f8468892f3f13af5625d36ed6b3e586d",
             //   accounts: {
             //     mnemonic: MNEMONIC,
             //   },
@@ -76,6 +75,6 @@ module.exports = {
         },
     },
     mocha: {
-        timeout: 500000,
+        timeout: 900000,
     },
 }
