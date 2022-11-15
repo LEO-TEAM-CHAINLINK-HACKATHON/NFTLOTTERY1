@@ -1,14 +1,11 @@
-import { useWeb3Contract } from "react-moralis";
+import { useWeb3Contract } from "react-moralis"
 import abi from "../../../../../constants/abi.json"
-import { useState } from "react";
+import { useState } from "react"
 
+const LotteryButton = ({ enterRaffle }) => {
+    const [recentWinner, setRecentWinner] = useState("0")
+    const [numPlayer, setnumPlayer] = useState("0")
 
-const LotteryButton = ({enterRaffle}) => {
-    
-    const [recentWinner, setRecentWinner] = useState("0");
-    const [numPlayer, setnumPlayer] = useState("0");
-
-    
     // const {runContractFunction: enterRaffle} = useWeb3Contract({
     //     abi: abi,
     //     contractAddress:CONTRACT_ADDRESS,
@@ -25,23 +22,24 @@ const LotteryButton = ({enterRaffle}) => {
 
     // useEffect(() => {
     //   if (isWeb3Enabled)
-    
+
     //   return () => {
     //     second
     //   }
     // }, [isWeb3Enabled])
-    
+
     return (
-        <span  
-        type="button" 
-        onClick={ async () => {
-            await enterRaffle()
-            console.log("clicked")
-        }}
-        className="badge badge-pill fs-5 m-2 badge-success text-dark">
-         01 ETH
+        <span
+            type="button"
+            onClick={async () => {
+                await enterRaffle()
+                console.log("clicked")
+            }}
+            className="badge badge-pill fs-5 p-2 w-100 badge-success text-white"
+        >
+            Connect Wallet
         </span>
     )
 }
 
-export default LotteryButton ;
+export default LotteryButton
