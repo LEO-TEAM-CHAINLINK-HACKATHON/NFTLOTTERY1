@@ -7,7 +7,7 @@ function Upcoming({ myLoader }) {
                 <h1 className="text-white">Upcoming Raffles</h1>
             </div>
             <div className="container">
-                <div className="row place-content-center gx-5">
+                <div className="row place-content-center">
                     <RaffleItemCard myLoader={myLoader} />
                     {/* <RaffleItemCard myLoader={myLoader} />
                     <RaffleItemCard myLoader={myLoader} />

@@ -13,12 +13,12 @@ function RaffleItemCard({ myLoader }) {
                     loader={myLoader}
                 />
             </div>
-            <div className="card-body">
-                <strong>Upcoming</strong>
-                <h4 className="card-title">HOBO HANDBAG</h4>
+            <div className="card-body px-2 overflow-hidden">
+                <strong className="badge badge-success fs-6">Upcoming</strong>
+                <h4 className="card-title py-2">HOBO HANDBAG</h4>
                 <div className="row justify-items-center">
-                    <div className="col-lg-6 card-subtitle">Tickets:</div>
-                    <div className="col-lg-6 card-subtitle">Price:</div>
+                    <div className="col-sm-12 col-md-6 card-subtitle">Tickets:</div>
+                    <div className="col-sm-12 col-md-6 card-subtitle">Price:</div>
                 </div>
             </div>
             <div className="card-footer d-flex justify-content-end">

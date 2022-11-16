@@ -7,6 +7,8 @@ pragma solidity ^0.8.7;
 // Pick a random winner
 //Winner to be selected every x
 
+//set number of tickets to be sold before raffle starts
+
 // chainlink oracle
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";

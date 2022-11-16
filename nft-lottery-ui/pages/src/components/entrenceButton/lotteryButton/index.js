@@ -1,32 +1,39 @@
-import { useWeb3Contract } from "react-moralis"
-import abi from "../../../../../constants/abi.json"
-import { useState } from "react"
+import { useWeb3Contract, useMoralis } from "react-moralis"
+import { useState, useEffect } from "react"
+import { abi, contractAddresses } from "../../../../../constants"
 
-const LotteryButton = ({ enterRaffle }) => {
+const LotteryButton = () => {
     const [recentWinner, setRecentWinner] = useState("0")
     const [numPlayer, setnumPlayer] = useState("0")
+    const { chainId: chainIdhex, isWeb3Enabled } = useMoralis()
+    const chainId = parseInt(chainIdhex)
+    console.log(chainId)
+    const raffleAddress = chainId in contractAddresses ? contractAddresses[chainId][0] : null
+    console.log()
 
-    // const {runContractFunction: enterRaffle} = useWeb3Contract({
+    // const { runContractFunction: enterRaffle } = useWeb3Contract({
     //     abi: abi,
-    //     contractAddress:CONTRACT_ADDRESS,
-    //     functionName:"enterRaffle",
-    //     msgValue:"100000000000000000", //eth
+    //     contractAddress: contractAddresses,
+    //     functionName: "enterRaffle",
     //     params: {},
+    //     msgValue: "100000000000000000", //eth
     // })
-    // const {runContractFunction:} = useWeb3Contract({
-    //     abi:"",
-    //     contractAddress:CONTRACT_ADDRESS,
-    //     functionName:"",
-    //     params:{}
-    // })
+    const { runContractFunction: getEntranceFee } = useWeb3Contract({
+        abi: abi,
+        contractAddress: raffleAddress,
+        functionName: "getEntranceFee",
+        params: {},
+    })
 
-    // useEffect(() => {
-    //   if (isWeb3Enabled)
-
-    //   return () => {
-    //     second
-    //   }
-    // }, [isWeb3Enabled])
+    useEffect(() => {
+        if (isWeb3Enabled) {
+            async function updateUI() {
+                const something = (await getEntranceFee()).toString()
+                console.log(something)
+            }
+            updateUI()
+        }
+    }, [isWeb3Enabled])
 
     return (
         <span
