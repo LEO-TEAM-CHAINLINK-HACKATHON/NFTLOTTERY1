@@ -9,15 +9,15 @@ const LotteryButton = () => {
     const chainId = parseInt(chainIdhex)
     console.log(chainId)
     const raffleAddress = chainId in contractAddresses ? contractAddresses[chainId][0] : null
-    console.log(raffleAddress.toString())
+    console.log(`Raffle contract address : ${raffleAddress}`)
 
-    // const { runContractFunction: enterRaffle } = useWeb3Contract({
-    //     abi: abi,
-    //     contractAddress: contractAddresses,
-    //     functionName: "enterRaffle",
-    //     params: {},
-    //     msgValue: "100000000000000000", //eth
-    // })
+    const { runContractFunction: enterRaffle } = useWeb3Contract({
+        abi: abi,
+        contractAddress: raffleAddress,
+        functionName: "enterRaffle",
+        params: {},
+        msgValue: "10000000000000000", //eth
+    })
     const { runContractFunction: getEntranceFee } = useWeb3Contract({
         abi: abi,
         contractAddress: raffleAddress,
@@ -26,8 +26,9 @@ const LotteryButton = () => {
     })
 
     async function updateUI() {
+        console.log("Updating UI ..")
         const something = (await getEntranceFee()).toString()
-        console.log(something)
+        console.log(` Entrance Fee : ${something}`)
     }
     useEffect(() => {
         if (isWeb3Enabled) {

@@ -13,7 +13,7 @@ module.exports = async function () {
 async function updateAbi() {
     const raffle = await ethers.getContract("Raffle")
     const abi = raffle.interface.format(ethers.utils.FormatTypes.json)
-    fs.writeFileSync(FRONT_END_ABI_FILE, JSON.stringify(abi))
+    fs.writeFileSync(FRONT_END_ABI_FILE, abi)
 }
 
 async function updateContractAddress() {
@@ -26,7 +26,7 @@ async function updateContractAddress() {
         }
     }
     {
-        currentAddress[chainId] = raffle.address
+        currentAddress[chainId] = [raffle.address]
     }
     fs.writeFileSync(FRONT_END_ADDRESS_FILE, JSON.stringify(currentAddress))
 }
