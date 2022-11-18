@@ -5,11 +5,13 @@ import { abi, contractAddresses } from "../../../../../constants"
 const LotteryButton = () => {
     const [recentWinner, setRecentWinner] = useState("0")
     const [numPlayer, setnumPlayer] = useState("0")
-    const { chainId: chainIdhex, isWeb3Enabled } = useMoralis()
-    const chainId = parseInt(chainIdhex)
+    const { chainId: chainIdHex, isWeb3Enabled } = useMoralis()
+    const chainId = parseInt(chainIdHex)
     console.log(chainId)
+    console.log(contractAddresses[chainId])
+    console.log(contractAddresses)
     const raffleAddress = chainId in contractAddresses ? contractAddresses[chainId][0] : null
-    console.log(raffleAddress.toString())
+    console.log(raffleAddress)
 
     // const { runContractFunction: enterRaffle } = useWeb3Contract({
     //     abi: abi,
@@ -25,12 +27,12 @@ const LotteryButton = () => {
         params: {},
     })
 
-    async function updateUI() {
-        const something = (await getEntranceFee()).toString()
-        console.log(something)
-    }
     useEffect(() => {
         if (isWeb3Enabled) {
+            async function updateUI() {
+                const something = (await getEntranceFee()).toString()
+                console.log(something)
+            }
             updateUI()
         }
     }, [isWeb3Enabled])
