@@ -1,10 +1,12 @@
 import { useWeb3Contract, useMoralis } from "react-moralis"
 import { useState, useEffect } from "react"
 import { abi, contractAddresses } from "../../../../../constants"
+import { useNotification } from "web3uikit"
 
 const LotteryButton = () => {
     const [recentWinner, setRecentWinner] = useState("0")
     const [numPlayer, setnumPlayer] = useState("0")
+    const dispatch = useNotification()
     const { chainId: chainIdHex, isWeb3Enabled } = useMoralis()
     const chainId = parseInt(chainIdHex)
     console.log(chainId)
@@ -27,28 +29,55 @@ const LotteryButton = () => {
         functionName: "getEntranceFee",
         params: {},
     })
+    const { runContractFunction: getNumberOfPlayers } = useWeb3Contract({
+        abi: abi,
+        contractAddress: raffleAddress,
+        functionName: "getNumberOfPlayers",
+        params: {},
+    })
+    const { runContractFunction: getRecentWinner } = useWeb3Contract({
+        abi: abi,
+        contractAddress: raffleAddress,
+        functionName: "getRecentWinner",
+        params: {},
+    })
 
     async function updateUI() {
         console.log("Updating UI ..")
-        const something = (await getEntranceFee()).toString()
-        console.log(` Entrance Fee : ${something}`)
+        const entrenceFee = (await getEntranceFee()).toString()
+        console.log(` Entrance Fee : ${entrenceFee}`)
     }
 
     useEffect(() => {
         if (isWeb3Enabled) {
-            async function updateUI() {
-                const something = (await getEntranceFee()).toString()
-                console.log(something)
-            }
             updateUI()
         }
     }, [isWeb3Enabled])
+    const handleSuccess = async function (tx) {
+        await tx.wait(1)
+        handleNewNotification(tx)
+    }
+    const handleNewNotification = function () {
+        dispatch({
+            type: "info",
+            message: "transaction complete",
+            title: "Tx transaction",
+            position: "topR",
+            icon: "bell",
+        })
+    }
 
     return (
         <span
+            aria-disabled={!raffleAddress}
             type="button"
             onClick={async () => {
-                await enterRaffle()
+                await enterRaffle({
+                    onSuccess: handleSuccess,
+                    onerror: (error) => {
+                        console.log(error)
+                    },
+                })
                 console.log("clicked")
             }}
             className="badge badge-pill fs-5 p-2 w-100 badge-success text-white"
