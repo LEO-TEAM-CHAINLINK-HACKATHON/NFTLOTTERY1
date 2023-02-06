@@ -53,10 +53,15 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                   )
               })
               it("returns the correct number of players", async function () {
-                  await raffle.enterRaffle({ value: raffleEntranceFee })
-                  await raffle.enterRaffle({ value: raffleEntranceFee })
+                  for (let i = 0; i < 500; i++) {
+                      await raffle.enterRaffle({ value: raffleEntranceFee })
+                  }
+
                   const numPlayers = await raffle.getNumberOfPlayers()
-                  assert.equal(numPlayers, 300)
+                  assert.equal(numPlayers.toNumber(), 500, "Number of players is 500 ")
+                  await expect(raffle.enterRaffle({ value: raffleEntranceFee })).to.be.revertedWith(
+                      "Raffle_NotOpen"
+                  )
               })
           })
           describe("checkUpkeep", function () {
@@ -159,6 +164,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                               console.log(accounts[0].address)
                               console.log(accounts[1].address)
                               console.log(accounts[3].address)
+                              console.log(accounts[8].address)
 
                               const raffleState = await raffle.getRaffleState()
                               const endingTimeStamp = await raffle.getLastTimeStamp()

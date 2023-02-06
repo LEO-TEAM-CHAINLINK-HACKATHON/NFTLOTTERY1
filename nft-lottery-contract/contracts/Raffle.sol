@@ -75,11 +75,14 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
         if (msg.value < i_entranceFee) {
             revert Raffle_NotEnoughETHEntered();
         }
-        if (s_raffleState != RaffleState.OPEN && s_players.length >= 500) {
+        if (s_raffleState != RaffleState.OPEN) {
             revert Raffle_NotOpen();
         }
         s_players.push(payable(msg.sender));
         emit RaffleEnter(msg.sender);
+        if (s_players.length == 500) {
+            s_raffleState = RaffleState.CALCULATING;
+        }
     }
 
     /**
