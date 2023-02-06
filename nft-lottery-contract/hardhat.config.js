@@ -21,14 +21,24 @@ module.exports = {
         hardhat: {
             chainId: 31337,
             blockConfirmations: 1,
+            count: 500,
         },
         localhost: {
             chainId: 31337,
             blockConfirmations: 1,
+            count: 500,
         },
         goerli: {
             url: GOERLI_RPC_URL,
-            accounts: [GOERLI_PRIVATE_KEY],
+            accounts: {
+                privateKey: [GOERLI_PRIVATE_KEY],
+                mnemonic: "test test test test test test test test test test test junk",
+                path: "m/44'/60'/0'/0",
+                initialIndex: 0,
+                count: 500,
+                balance: "10000000000000000000000",
+                passphrase: "",
+            },
             //entreeFee: 0.1,
             //   accounts: {
             //     mnemonic: MNEMONIC,
