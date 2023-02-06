@@ -52,6 +52,12 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                       "Raffle_NotOpen"
                   )
               })
+              it("returns the correct number of players", async function () {
+                  await raffle.enterRaffle({ value: raffleEntranceFee })
+                  await raffle.enterRaffle({ value: raffleEntranceFee })
+                  const numPlayers = await raffle.getNumberOfPlayers()
+                  assert.equal(numPlayers, 300)
+              })
           })
           describe("checkUpkeep", function () {
               it("returns false if people haven't sent ETH", async () => {

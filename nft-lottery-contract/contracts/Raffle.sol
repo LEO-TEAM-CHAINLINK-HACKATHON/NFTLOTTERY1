@@ -75,7 +75,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
         if (msg.value < i_entranceFee) {
             revert Raffle_NotEnoughETHEntered();
         }
-        if (s_raffleState != RaffleState.OPEN) {
+        if (s_raffleState != RaffleState.OPEN && s_players.length >= 500) {
             revert Raffle_NotOpen();
         }
         s_players.push(payable(msg.sender));
@@ -93,14 +93,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     function checkUpkeep(
         bytes memory /*checkData*/
-    )
-        public
-        override
-        returns (
-            bool upkeepNeeded,
-            bytes memory /*performData*/
-        )
-    {
+    ) public override returns (bool upkeepNeeded, bytes memory /*performData*/) {
         bool isOpen = (RaffleState.OPEN == s_raffleState);
         bool timePassed = ((block.timestamp - s_lastTimeStamp) > i_interval);
         bool hasPlayers = (s_players.length > 0);
